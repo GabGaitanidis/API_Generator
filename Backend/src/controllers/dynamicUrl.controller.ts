@@ -2,9 +2,10 @@ import type { Request, Response } from "express";
 validateDynamicApi;
 import { validateDynamicApi } from "../validation/dynamicUrlValidation";
 import getDynamicsUrlDataService from "../service/getDynamicsUrlData.service";
+import normalizeEndpoint from "../service/normalizeEndpoint";
 
 function getUserId(req: Request): number {
-  const userId = Number((req as any).user?.id);
+  const userId = Number(req.user?.id);
 
   if (!userId) {
     const error = new Error("Unauthorized");
@@ -36,14 +37,6 @@ function extractDynamicUrlParams(req: Request): {
     apiKey: apiKeyParam as string,
     endpoint: endpointParam,
   };
-}
-
-function normalizeEndpoint(endpoint: string): string {
-  if (!endpoint.startsWith("/")) {
-    return `/${endpoint}`;
-  }
-
-  return endpoint;
 }
 
 async function getDynamicUrlData(req: Request, res: Response) {

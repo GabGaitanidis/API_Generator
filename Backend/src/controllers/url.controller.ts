@@ -13,7 +13,7 @@ async function createUrlRoute(req: Request, res: Response) {
     });
   }
 
-  const userId = Number((req as any).user?.id);
+  const userId = Number(req.user?.id);
   if (!userId) return res.status(401).json({ message: "Unauthorized" });
 
   const url = await createDynamicUrlService(userId, validation.data.ruleId);
@@ -21,7 +21,7 @@ async function createUrlRoute(req: Request, res: Response) {
 }
 
 async function getUrlRoute(req: Request, res: Response) {
-  const userId = Number((req as any).user?.id);
+  const userId = Number(req.user?.id);
   if (!userId) return res.status(401).json({ message: "Unauthorized" });
 
   const urls = await getDynamicUrlService(userId);

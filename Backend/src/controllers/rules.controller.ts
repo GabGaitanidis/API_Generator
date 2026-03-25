@@ -4,7 +4,7 @@ import createRuleService from "../service/createRuleService";
 import { validateCreateRule } from "../validation/ruleValidation";
 
 async function getRulesController(req: Request, res: Response) {
-  const userId = Number((req as any).user?.id);
+  const userId = Number(req.user?.id);
   if (!userId) return res.status(401).json({ message: "Unauthorized" });
 
   const rules = await getRulesByUser(userId);
@@ -12,7 +12,7 @@ async function getRulesController(req: Request, res: Response) {
 }
 
 async function createRulesController(req: Request, res: Response) {
-  const userId = Number((req as any).user?.id);
+  const userId = Number(req.user?.id);
   if (!userId) return res.status(401).json({ message: "Unauthorized" });
 
   const { endpoint, dataSchema } = validateCreateRule(req.body);
