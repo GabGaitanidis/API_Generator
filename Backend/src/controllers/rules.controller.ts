@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { getRulesByUser } from "../repository/rules.repo";
 import createRuleService from "../service/createRuleService";
-import { validateCreateRule } from "../service/ruleValidation.service";
+import { validateCreateRule } from "../validation/ruleValidation";
 
 async function getRulesController(req: Request, res: Response) {
   const userId = Number((req as any).user?.id);

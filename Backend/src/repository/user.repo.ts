@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { db } from "../db";
-import { userTable } from "../db/schema";
+import { rulesTable, userTable } from "../db/schema";
 
 async function getUsers() {
   const users = await db.query.userTable.findMany();
@@ -18,6 +18,18 @@ async function getUsersAPIKey(userId: number) {
   }
 
   return result[0].apiKey;
+}
+
+async function getUserAPIKeyWithEndpoint(apiKey: string, endpoint: string) {
+  const results = await db
+    .select({ apiKey: userTable.api_key })
+    .from(userTable)
+    .innerJoin(rulesTable, eq(userTable.id, rulesTable.user_id))
+    .where(
+      and(eq(userTable.api_key, apiKey), eq(rulesTable.endpoint, endpoint)),
+    );
+
+  return results;
 }
 
 async function createUser(
@@ -39,4 +51,4 @@ async function createUser(
   return user;
 }
 
-export { createUser, getUsers, getUsersAPIKey };
+export { createUser, getUsers, getUsersAPIKey, getUserAPIKeyWithEndpoint };

@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { eq } from "drizzle-orm";
-import { z } from "zod";
 import { db } from "../db";
+import { validateLogin, validateRegister } from "../validation/authValidation";
 
 import {
   signAccessToken,
@@ -15,32 +15,13 @@ import { clearAuthCookies, setAuthCookies } from "../utils/authCookies";
 import { userTable } from "../db/schema";
 import { generateApiKey } from "../data_generation/apiKeyGenerator";
 
-const registerSchema = z.object({
-  name: z.string().min(2),
-  email: z.string().email(),
-  password: z.string().min(6),
-});
-
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
-});
-
 function sha256(value: string) {
   return crypto.createHash("sha256").update(value).digest("hex");
 }
 
 export async function register(req: Request, res: Response) {
   try {
-    const parsed = registerSchema.safeParse(req.body);
-    if (!parsed.success) {
-      return res.status(400).json({
-        message: "Validation failed",
-        errors: parsed.error.format(),
-      });
-    }
-
-    const { name, email, password } = parsed.data;
+    const { name, email, password } = validateRegister(req.body);
 
     const existingUsers = await db
       .select()
@@ -108,15 +89,7 @@ export async function register(req: Request, res: Response) {
 
 export async function login(req: Request, res: Response) {
   try {
-    const parsed = loginSchema.safeParse(req.body);
-    if (!parsed.success) {
-      return res.status(400).json({
-        message: "Validation failed",
-        errors: parsed.error.format(),
-      });
-    }
-
-    const { email, password } = parsed.data;
+    const { email, password } = validateLogin(req.body);
 
     console.log("incoming email:", JSON.stringify(email));
     console.log("incoming password:", JSON.stringify(password));

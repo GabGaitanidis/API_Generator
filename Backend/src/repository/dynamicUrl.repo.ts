@@ -2,7 +2,6 @@ import { and, eq } from "drizzle-orm";
 import { db } from "../db";
 import { rulesTable } from "../db/schema";
 import authorizeAPIKey from "../service/authorizeAPIKey";
-import dataGenerator from "../data_generation/dataGenerator";
 
 async function getDynamicsUrlData(userId: number, endpoint: string) {
   const result = await db

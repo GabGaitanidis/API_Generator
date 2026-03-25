@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import getDynamicsUrlDataService from "../service/getDynamicsUrlDataService";
-import { validateDynamicApi } from "../service/dynamicUrlValidation.service";
+import { validateDynamicApi } from "../validation/dynamicUrlValidation";
+import getDynamicsUrlDataService from "../service/getDynamicsUrlData.service";
 
 async function getDynamicUrlData(req: Request, res: Response) {
   const userId = Number((req as any).user?.id);

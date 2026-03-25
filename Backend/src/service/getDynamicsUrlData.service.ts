@@ -13,7 +13,7 @@ async function getDynamicsUrlDataService(
 
   const result = await getDynamicsUrlData(userId, endpoint);
   if (!result || !result.length) {
-    return null; // no matching rule for this user + endpoint
+    return null;
   }
 
   const schema = result[0].dataSchema;

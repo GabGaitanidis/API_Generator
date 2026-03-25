@@ -1,17 +1,9 @@
-import { and, eq } from "drizzle-orm";
-import { rulesTable, userTable } from "../db/schema";
-import { db } from "../db";
+import { getUserAPIKeyWithEndpoint } from "../repository/user.repo";
 
 async function authorizeAPIKey(apiKey: string, endpoint: string) {
-  const matchingRules = await db
-    .select({ apiKey: userTable.api_key })
-    .from(userTable)
-    .innerJoin(rulesTable, eq(userTable.id, rulesTable.user_id))
-    .where(
-      and(eq(userTable.api_key, apiKey), eq(rulesTable.endpoint, endpoint)),
-    );
+  const results = await getUserAPIKeyWithEndpoint(apiKey, endpoint);
 
-  return matchingRules.length > 0;
+  return results.length;
 }
 
 export default authorizeAPIKey;

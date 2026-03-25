@@ -31,7 +31,7 @@ describe("createDynamicUrlService", () => {
 
     expect(getUsersAPIKey).toHaveBeenCalledWith(5);
     expect(getEndpoint).toHaveBeenCalledWith(5, 99);
-    expect(urlGenerator).toHaveBeenCalledWith(5, "TESTKEY", "/users");
+    expect(urlGenerator).toHaveBeenCalledWith("TESTKEY", "/users");
     expect(createDynamicUrl).toHaveBeenCalledWith(5, "http://test-url", 99);
     expect(bindUrlToRule).toHaveBeenCalledWith(99, 123);
     expect(output).toEqual({ id: 123, url: "http://test-url" });
