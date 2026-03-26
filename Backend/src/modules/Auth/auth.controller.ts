@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { eq } from "drizzle-orm";
 import { db } from "../../db";
-import { validateLogin, validateRegister } from "./authValidation";
+import { validateLogin, validateRegister } from "./auth.validation";
 
 import {
   signAccessToken,

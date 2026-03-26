@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import getDynamicsUrlDataService from "./getDynamicsUrlDataService";
+import getDynamicsUrlDataService from "./getDynamicsUrlData.service";
 
 async function getDynamicUrlData(req: Request, res: Response) {
   const rawParams = {

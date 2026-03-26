@@ -1,8 +1,8 @@
 import dataGenerator from "../../data_generation/dataGenerator";
 import authorizeAPIKey from "../Auth/authorizeAPIKey";
-import normalizeEndpoint from "../../service/normalizeEndpoint";
+import normalizeEndpoint from "../../utils/normalizeEndpoint";
 import { getDynamicsUrlData } from "./dynamicUrl.repo";
-import { validateDynamicApi } from "./dynamicUrlValidation";
+import { validateDynamicApi } from "./dynamicUrl.validation";
 
 async function getDynamicsUrlDataService(params: Object) {
   const { apiKey, endpoint } = validateDynamicApi(params);

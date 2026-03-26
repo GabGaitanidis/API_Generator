@@ -1,6 +1,6 @@
 import { getUsersAPIKey } from "../User/user.repo";
 import { createRule } from "./rules.repo";
-import { validateCreateRule } from "./ruleValidation";
+import { validateCreateRule } from "./rule.validation";
 
 async function createRuleService(userId: number, body: any) {
   const { endpoint, dataSchema } = validateCreateRule(body);

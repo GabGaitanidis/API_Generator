@@ -1,7 +1,5 @@
-// import { getUsers } from "../repository/user.repo";
-
 import { Request, Response } from "express";
-import createUserService from "./createUserService";
+import createUserService from "./createUser.service";
 import { getUsers } from "./user.repo";
 
 async function getUsersController(req: Request, res: Response) {
