@@ -1,11 +1,11 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import userRouter from "./routes/user.route";
-import urlRouter from "./routes/rules.route";
-import dynamicRouter from "./routes/dynamic.route";
-import authRouter from "./routes/auth.routes";
+import urlRouter from "./modules/Rules/rules.route";
+import dynamicRouter from "./modules/URL/dynamic.route";
 import { notFoundHandler, errorHandler } from "./middlewares/error.middleware";
+import userRouter from "./modules/User/user.route";
+import authRouter from "./modules/Auth/auth.routes";
 
 const app = express();
 

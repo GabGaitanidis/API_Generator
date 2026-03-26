@@ -1,7 +1,6 @@
 import { eq, and } from "drizzle-orm";
-import { db } from "../db";
-import { rulesTable, userTable } from "../db/schema";
-
+import { db } from "../../db";
+import { rulesTable, userTable } from "../../db/schema";
 async function getUsers() {
   const users = await db.query.userTable.findMany();
   return users;

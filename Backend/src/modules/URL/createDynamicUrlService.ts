@@ -1,8 +1,8 @@
-import { getEndpoint, bindUrlToRule } from "../repository/rules.repo";
-import { getUsersAPIKey } from "../repository/user.repo";
-import urlGenerator from "../data_generation/urlCreator";
-import { createDynamicUrl } from "../repository/url.repo";
-import { createUrlSchema } from "../validation/urlValidation";
+import { getEndpoint, bindUrlToRule } from "../Rules/rules.repo";
+import urlGenerator from "../../data_generation/urlCreator";
+import { createDynamicUrl } from "./url.repo";
+import { createUrlSchema } from "./urlValidation";
+import { getUsersAPIKey } from "../User/user.repo";
 
 async function createDynamicUrlService(userId: number, params: Object) {
   const validation = createUrlSchema.safeParse(params);

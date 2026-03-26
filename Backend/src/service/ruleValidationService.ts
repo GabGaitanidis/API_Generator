@@ -1,1 +1,1 @@
-export { validateCreateRule } from "../validation/ruleValidation";
+export { validateCreateRule } from "../modules/Rules/ruleValidation";

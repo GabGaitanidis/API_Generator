@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { getRulesByUser } from "../repository/rules.repo";
-import createRuleService from "../service/createRuleService";
+import { getRulesByUser } from "./rules.repo";
+import createRuleService from "./createRule.service";
 
 async function getRulesController(req: Request, res: Response) {
   const userId = Number(req.user?.id);

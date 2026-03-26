@@ -1,5 +1,5 @@
-import { generateApiKey } from "../data_generation/apiKeyGenerator";
-import { createUser } from "../repository/user.repo";
+import { generateApiKey } from "../../data_generation/apiKeyGenerator";
+import { createUser } from "./user.repo";
 
 async function createUserService(
   name: string,

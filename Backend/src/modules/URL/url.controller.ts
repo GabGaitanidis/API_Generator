@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import createDynamicUrlService from "../service/createDynamicUrlService";
-import getDynamicUrlService from "../service/getDynamicUrlService";
+import createDynamicUrlService from "./createDynamicUrlService";
+import getDynamicUrlService from "./getDynamicUrlService";
 
 async function createUrlRoute(req: Request, res: Response) {
   const userId = Number(req.user?.id);

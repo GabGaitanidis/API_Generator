@@ -1,5 +1,5 @@
-import { urlTable } from "../db/schema";
-import { db } from "../db";
+import { urlTable } from "../../db/schema";
+import { db } from "../../db";
 import { eq } from "drizzle-orm";
 
 async function getDynamicUrl(userId: number = 1) {

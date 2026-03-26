@@ -25,6 +25,7 @@ export const rulesTable = pgTable("rules", {
   endpoint: varchar({ length: 255 }).notNull(),
   dataSchema: jsonb("data_schema").$type<Record<string, string>>().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  api_key: varchar({ length: 255 }).notNull(),
 });
 
 export const urlTable = pgTable("urls", {

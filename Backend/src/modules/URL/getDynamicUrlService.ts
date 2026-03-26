@@ -1,4 +1,4 @@
-import { getDynamicUrl } from "../repository/url.repo";
+import { getDynamicUrl } from "./url.repo";
 
 async function getDynamicUrlService(userId: number) {
   const url = await getDynamicUrl(userId);

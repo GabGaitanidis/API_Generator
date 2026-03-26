@@ -1,5 +1,5 @@
-import { db } from "../db";
-import { rulesTable } from "../db/schema";
+import { db } from "../../db";
+import { rulesTable } from "../../db/schema";
 import { eq, and } from "drizzle-orm"; //
 
 async function getRulesByUser(userId: number) {
@@ -14,17 +14,15 @@ async function createRule(
   userId: number,
   endpoint: string,
   dataSchema: Record<string, string>,
-  url_id?: number,
+  apiKey: string,
 ) {
-  const values: any = {
+  const values = {
     user_id: userId,
     endpoint: endpoint,
     dataSchema: dataSchema,
+    api_key: apiKey,
   };
 
-  if (url_id !== undefined) {
-    values.url_id = url_id;
-  }
   const rule = await db.insert(rulesTable).values(values).returning();
   return rule;
 }

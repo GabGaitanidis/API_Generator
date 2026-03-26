@@ -2,18 +2,18 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { eq } from "drizzle-orm";
-import { db } from "../db";
-import { validateLogin, validateRegister } from "../validation/authValidation";
+import { db } from "../../db";
+import { validateLogin, validateRegister } from "./authValidation";
 
 import {
   signAccessToken,
   signRefreshToken,
   verifyRefreshToken,
-} from "../utils/jwt";
+} from "../../utils/jwt";
 
-import { clearAuthCookies, setAuthCookies } from "../utils/authCookies";
-import { userTable } from "../db/schema";
-import { generateApiKey } from "../data_generation/apiKeyGenerator";
+import { clearAuthCookies, setAuthCookies } from "../../utils/authCookies";
+import { userTable } from "../../db/schema";
+import { generateApiKey } from "../../data_generation/apiKeyGenerator";
 
 function sha256(value: string) {
   return crypto.createHash("sha256").update(value).digest("hex");

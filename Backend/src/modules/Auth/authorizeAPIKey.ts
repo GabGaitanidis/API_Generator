@@ -1,4 +1,4 @@
-import { getUserAPIKeyWithEndpoint } from "../repository/user.repo";
+import { getUserAPIKeyWithEndpoint } from "../User/user.repo";
 
 async function authorizeAPIKey(apiKey: string, endpoint: string) {
   const results = await getUserAPIKeyWithEndpoint(apiKey, endpoint);

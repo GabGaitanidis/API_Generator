@@ -1,23 +1,23 @@
 import { faker } from "@faker-js/faker";
 
-type FakerModule = keyof typeof faker;
-
 function dataGenerator(dataSchema: Record<string, string>) {
   const mockData: Record<string, any> = {};
 
   for (const [key, fakerPath] of Object.entries(dataSchema)) {
-    const [moduleName, methodName] = fakerPath.split(".") as [
-      FakerModule,
-      string,
-    ];
+    const parts = fakerPath.split(".");
 
-    const module = faker[moduleName] as Record<string, any>;
-    const method = module[methodName];
+    let current: any = faker;
+    let parent: any = null;
 
-    if (typeof method === "function") {
-      mockData[key] = method();
+    for (const part of parts) {
+      parent = current;
+      current = current[part];
+    }
+
+    if (typeof current === "function") {
+      mockData[key] = current.call(parent);
     } else {
-      mockData[key] = method;
+      mockData[key] = current;
     }
   }
 

@@ -1,6 +1,8 @@
-import { getUsers } from "../repository/user.repo";
+// import { getUsers } from "../repository/user.repo";
+
 import { Request, Response } from "express";
-import createUserService from "../service/createUserService";
+import createUserService from "./createUserService";
+import { getUsers } from "./user.repo";
 
 async function getUsersController(req: Request, res: Response) {
   const users = await getUsers();
