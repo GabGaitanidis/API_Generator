@@ -94,10 +94,10 @@ Server runs at: `http://localhost:5000`
 
 ### Dynamic URL
 
-`GET /dynamic` (auth-required)
+`GET /dynamic` (auth-required) --> auth based on API key
 `POST /dynamic/:ruleId` (auth-required)
 
-- Creates a mock URL (no userId in output path)
+- Creates a mock URL and authenticates it with a API key that was created with the user
 - URL template: `http://localhost:5000/dynamic/api/mock/{apiKey}/{endpoint}`
 
 ### Mock API
