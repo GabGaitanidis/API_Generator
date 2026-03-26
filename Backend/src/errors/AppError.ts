@@ -1,13 +1,8 @@
-class AppError extends Error {
-  public readonly statusCode: number;
+export class AppError extends Error {
+  status: number;
 
-  constructor(message: string, statusCode: number) {
+  constructor(message: string, status: number) {
     super(message);
-    this.statusCode = statusCode;
-    Object.setPrototypeOf(this, new.target.prototype);
-
-    Error.captureStackTrace(this, this.constructor);
+    this.status = status;
   }
 }
-
-export default AppError;
