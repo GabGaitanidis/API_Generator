@@ -15,12 +15,16 @@ async function createRule(
   endpoint: string,
   dataSchema: Record<string, string>,
   apiKey: string,
+  latency: number = 0,
+  errorRate: number = 0,
 ) {
   const values = {
     user_id: userId,
     endpoint: endpoint,
     dataSchema: dataSchema,
     api_key: apiKey,
+    latency: latency,
+    errorRate: errorRate,
   };
 
   const rule = await db.insert(rulesTable).values(values).returning();

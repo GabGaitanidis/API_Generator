@@ -15,6 +15,8 @@ app.use(
       "http://localhost:5500",
       "http://127.0.0.1:5500",
       "http://localhost:3000",
+      "http://localhost:3001",
+      "http://localhost:3002",
     ],
     credentials: true,
   }),
@@ -22,9 +24,9 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use("/auth", authRouter);
-app.use("/user", userRouter);
-app.use("/rule", urlRouter);
-app.use("/dynamic", dynamicRouter);
+app.use("/users", userRouter);
+app.use("/rules", urlRouter);
+app.use("/dynamics", dynamicRouter);
 app.get("/health", (req, res) => {
   res.send("Server good");
 });

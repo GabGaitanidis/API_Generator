@@ -87,9 +87,13 @@ Server runs at: `http://localhost:5000`
     "dataSchema": {
       "fullName": "person.fullName",
       "email": "internet.email"
-    }
+    },
+    "latency": 1000,
+    "errorRate": 30
   }
   ```
+- `latency`: optional integer (ms, 0-30000, default 0) - simulates response delay
+- `errorRate`: optional integer (0-100, default 0) - % chance to return 500 error for resilience testing
 - Validation via `ruleValidation.service`
 
 ### Dynamic URL
@@ -138,6 +142,18 @@ Includes unit tests:
 - Rule: `ruleValidation.service.ts` (Zod)
 - Dynamic API params: `dynamicUrlValidation.service.ts` (Zod)
 - Path param parser in `dynamicUrl.controller.ts`
+
+## Latency Simulation
+
+Mock APIs can simulate real-world delays by setting `latency` (in ms) when creating rules. The delay is applied before sending the response in the mock endpoint.
+
+Example: `latency: 2000` adds a 2-second delay.
+
+## Error Injection
+
+For resilience testing, set `errorRate` (0-100%) when creating rules. The mock endpoint will randomly return a 500 error with that probability.
+
+Example: `errorRate: 30` means 30% chance of 500 error, 70% normal response.
 
 ## Common Errors
 

@@ -5,7 +5,11 @@ import authorizeAPIKey from "../Auth/authorizeAPIKey";
 
 async function getDynamicsUrlData(apiKey: string, endpoint: string) {
   const result = await db
-    .select({ dataSchema: rulesTable.dataSchema })
+    .select({
+      dataSchema: rulesTable.dataSchema,
+      latency: rulesTable.latency,
+      errorRate: rulesTable.errorRate,
+    })
     .from(rulesTable)
     .where(
       and(eq(rulesTable.api_key, apiKey), eq(rulesTable.endpoint, endpoint)),

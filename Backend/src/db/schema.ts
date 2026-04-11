@@ -24,6 +24,8 @@ export const rulesTable = pgTable("rules", {
   url_id: integer("url_id").references(() => urlTable.id),
   endpoint: varchar({ length: 255 }).notNull(),
   dataSchema: jsonb("data_schema").$type<Record<string, string>>().notNull(),
+  latency: integer().default(0).notNull(),
+  errorRate: integer().default(0).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   api_key: varchar({ length: 255 }).notNull(),
 });
