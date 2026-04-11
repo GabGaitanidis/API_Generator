@@ -2,10 +2,7 @@
 import axios from "axios";
 
 // 1. Set up the dynamic URL based on Vite's environment variables
-const API_BASE_URL =
-  import.meta.env.MODE === "development"
-    ? "/api"
-    : import.meta.env.VITE_API_URL;
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 // 2. Pass the dynamic URL into the instance creation
 const axiosInstance = axios.create({
@@ -27,5 +24,6 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   },
 );
-
+console.log("MODE:", import.meta.env.MODE);
+console.log("VITE_API_URL:", import.meta.env.VITE_API_URL);
 export default axiosInstance;
