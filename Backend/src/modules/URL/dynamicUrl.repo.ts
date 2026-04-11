@@ -9,6 +9,7 @@ async function getDynamicsUrlData(apiKey: string, endpoint: string) {
       dataSchema: rulesTable.dataSchema,
       latency: rulesTable.latency,
       errorRate: rulesTable.errorRate,
+      statusCodes: rulesTable.statusCodes,
     })
     .from(rulesTable)
     .where(

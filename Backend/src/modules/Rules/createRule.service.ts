@@ -3,7 +3,8 @@ import { createRule } from "./rules.repo";
 import { validateCreateRule } from "./rule.validation";
 
 async function createRuleService(userId: number, body: any) {
-  const { endpoint, dataSchema, latency, errorRate } = validateCreateRule(body);
+  const { endpoint, dataSchema, latency, errorRate, statusCodes } =
+    validateCreateRule(body);
   const apiKey = await getUsersAPIKey(userId);
   console.log(apiKey);
   const rule = await createRule(
@@ -13,6 +14,7 @@ async function createRuleService(userId: number, body: any) {
     apiKey,
     latency,
     errorRate,
+    statusCodes,
   );
 
   return { rule };

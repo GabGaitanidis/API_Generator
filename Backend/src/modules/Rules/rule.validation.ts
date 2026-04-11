@@ -5,6 +5,20 @@ const createRuleSchema = z.object({
   dataSchema: z.record(z.string(), z.any()).optional(),
   latency: z.number().int().min(0).max(30000).optional().default(0),
   errorRate: z.number().int().min(0).max(100).optional().default(0),
+  statusCodes: z
+    .record(z.string(), z.number().min(0).max(100))
+    .optional()
+    .default({ "200": 100 })
+    .refine(
+      (data) => {
+        const weights = Object.values(data);
+        const totalWeight = weights.reduce((sum, w) => sum + w, 0);
+        return totalWeight === 100;
+      },
+      {
+        message: "The sum of status code weights must equal 100%",
+      },
+    ),
 });
 
 export function validateCreateRule(data: any) {

@@ -3,6 +3,7 @@ import {
   pgTable,
   timestamp,
   varchar,
+  text,
   jsonb,
 } from "drizzle-orm/pg-core";
 
@@ -26,6 +27,10 @@ export const rulesTable = pgTable("rules", {
   dataSchema: jsonb("data_schema").$type<Record<string, string>>().notNull(),
   latency: integer().default(0).notNull(),
   errorRate: integer().default(0).notNull(),
+  statusCodes: jsonb("status_codes")
+    .$type<Record<string, number>>()
+    .notNull()
+    .default({ "200": 100 }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   api_key: varchar({ length: 255 }).notNull(),
 });
