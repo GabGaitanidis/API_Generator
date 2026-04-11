@@ -11,7 +11,10 @@ interface Rule {
 }
 
 interface URL {
+  id: number;
   url: string;
+  createdAt: string;
+  rules_id: number;
 }
 
 interface User {
@@ -30,6 +33,7 @@ interface FormData {
 }
 
 interface TestResponse {
+  statusCode?: number;
   data: any;
   error: string | null;
 }
@@ -44,7 +48,10 @@ const Dashboard: FC = () => {
     errorRate: 0,
     statusCodes: { "200": 100 },
   });
-  const [statusCodeInput, setStatusCodeInput] = useState({ code: "200", weight: "100" });
+  const [statusCodeInput, setStatusCodeInput] = useState({
+    code: "200",
+    weight: "100",
+  });
   const [selectedRuleId, setSelectedRuleId] = useState("");
   const [generatedUrl, setGeneratedUrl] = useState("");
   const [user, setUser] = useState<User | null>(null);
@@ -101,7 +108,10 @@ const Dashboard: FC = () => {
     }
     try {
       const dataSchema = JSON.parse(formData.dataSchema);
-      const totalWeight = Object.values(formData.statusCodes).reduce((a, b) => a + b, 0);
+      const totalWeight = Object.values(formData.statusCodes).reduce(
+        (a, b) => a + b,
+        0,
+      );
       if (totalWeight !== 100) {
         setError("Status code weights must total 100%");
         return;
@@ -109,7 +119,13 @@ const Dashboard: FC = () => {
       await axios.post("/api/rules", { ...formData, dataSchema });
       setError("");
       fetchRules();
-      setFormData({ endpoint: "", dataSchema: "", latency: 0, errorRate: 0, statusCodes: { "200": 100 } });
+      setFormData({
+        endpoint: "",
+        dataSchema: "",
+        latency: 0,
+        errorRate: 0,
+        statusCodes: { "200": 100 },
+      });
       setStatusCodeInput({ code: "200", weight: "100" });
     } catch (err) {
       setError("Failed to create rule");
@@ -135,9 +151,14 @@ const Dashboard: FC = () => {
       const response = await axios.get(
         generatedUrl.replace("http://localhost:5000", "/api"),
       );
-      setTestResponse({ data: response.data, error: null });
+      setTestResponse({
+        statusCode: response.status,
+        data: response.data,
+        error: null,
+      });
     } catch (err: any) {
       setTestResponse({
+        statusCode: err.response?.status,
         data: null,
         error: err.response?.data?.message || "Request failed",
       });
@@ -153,9 +174,9 @@ const Dashboard: FC = () => {
       setError("Invalid status code or weight");
       return;
     }
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      statusCodes: { ...prev.statusCodes, [code]: weight }
+      statusCodes: { ...prev.statusCodes, [code]: weight },
     }));
     setError("");
     setStatusCodeInput({ code: "200", weight: "100" });
@@ -166,7 +187,7 @@ const Dashboard: FC = () => {
       setError("Must have at least one status code");
       return;
     }
-    setFormData(prev => {
+    setFormData((prev) => {
       const newCodes = { ...prev.statusCodes };
       delete newCodes[code];
       return { ...prev, statusCodes: newCodes };
@@ -174,7 +195,7 @@ const Dashboard: FC = () => {
   };
 
   const applyStatusCodePreset = (preset: Record<string, number>) => {
-    setFormData(prev => ({ ...prev, statusCodes: preset }));
+    setFormData((prev) => ({ ...prev, statusCodes: preset }));
   };
 
   return (
@@ -463,47 +484,59 @@ const Dashboard: FC = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={() => applyStatusCodePreset({ "200": 85, "500": 15 })}
+                    onClick={() =>
+                      applyStatusCodePreset({ "200": 85, "500": 15 })
+                    }
                     className="px-3 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded border transition"
                   >
                     85% Success / 15% Error
                   </button>
                   <button
                     type="button"
-                    onClick={() => applyStatusCodePreset({ "200": 70, "400": 20, "500": 10 })}
+                    onClick={() =>
+                      applyStatusCodePreset({ "200": 70, "400": 20, "500": 10 })
+                    }
                     className="px-3 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded border transition"
                   >
                     Mixed Errors
                   </button>
-                  
+
                   <div className="mt-4 space-y-3">
                     <label className="block text-sm font-semibold text-gray-700">
                       HTTP Status Codes
                     </label>
                     <div className="flex gap-2 flex-wrap">
-                      {Object.entries(formData.statusCodes).map(([code, weight]) => (
-                        <div
-                          key={code}
-                          className="px-3 py-2 bg-blue-100 border border-blue-300 rounded-lg flex items-center gap-2"
-                        >
-                          <span className="font-mono text-sm">
-                            {code}: <span className="font-semibold">{weight}%</span>
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveStatusCode(code)}
-                            className="text-red-600 hover:text-red-800 font-bold"
+                      {Object.entries(formData.statusCodes).map(
+                        ([code, weight]) => (
+                          <div
+                            key={code}
+                            className="px-3 py-2 bg-blue-100 border border-blue-300 rounded-lg flex items-center gap-2"
                           >
-                            ×
-                          </button>
-                        </div>
-                      ))}
+                            <span className="font-mono text-sm">
+                              {code}:{" "}
+                              <span className="font-semibold">{weight}%</span>
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveStatusCode(code)}
+                              className="text-red-600 hover:text-red-800 font-bold"
+                            >
+                              ×
+                            </button>
+                          </div>
+                        ),
+                      )}
                     </div>
-                    
+
                     <div className="grid grid-cols-3 gap-2">
                       <select
                         value={statusCodeInput.code}
-                        onChange={(e) => setStatusCodeInput({ ...statusCodeInput, code: e.target.value })}
+                        onChange={(e) =>
+                          setStatusCodeInput({
+                            ...statusCodeInput,
+                            code: e.target.value,
+                          })
+                        }
                         className="p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="200">200 OK</option>
@@ -528,7 +561,12 @@ const Dashboard: FC = () => {
                       <input
                         type="number"
                         value={statusCodeInput.weight}
-                        onChange={(e) => setStatusCodeInput({ ...statusCodeInput, weight: e.target.value })}
+                        onChange={(e) =>
+                          setStatusCodeInput({
+                            ...statusCodeInput,
+                            weight: e.target.value,
+                          })
+                        }
                         className="p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
                         placeholder="Weight %"
                         min="0"
@@ -543,9 +581,20 @@ const Dashboard: FC = () => {
                       </button>
                     </div>
                     <p className="text-xs text-gray-500">
-                      Total weight: {Object.values(formData.statusCodes).reduce((a, b) => a + b, 0)}% (must be 100%)
+                      Total weight:{" "}
+                      {Object.values(formData.statusCodes).reduce(
+                        (a, b) => a + b,
+                        0,
+                      )}
+                      % (must be 100%)
                     </p>
                   </div>
+                  <button
+                    type="submit"
+                    className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition active:scale-95 mt-6"
+                  >
+                    Create Rule
+                  </button>
                 </form>
               </div>
 
@@ -653,9 +702,16 @@ const Dashboard: FC = () => {
                     {/* Response Display */}
                     {testResponse.data && (
                       <div className="p-4 bg-green-50 border border-green-300 rounded-lg animate-fadeIn">
-                        <p className="text-sm font-semibold text-green-700 mb-3">
-                          ✓ Success Response
-                        </p>
+                        <div className="flex items-center justify-between mb-3">
+                          <p className="text-sm font-semibold text-green-700">
+                            ✓ Success Response
+                          </p>
+                          {testResponse.statusCode && (
+                            <span className="px-3 py-1 bg-green-200 text-green-800 text-sm font-bold rounded">
+                              {testResponse.statusCode}
+                            </span>
+                          )}
+                        </div>
                         <pre className="bg-white p-4 rounded overflow-auto max-h-64 text-xs font-mono text-gray-800 border border-green-200">
                           {JSON.stringify(testResponse.data, null, 2)}
                         </pre>
@@ -674,9 +730,16 @@ const Dashboard: FC = () => {
 
                     {testResponse.error && (
                       <div className="p-4 bg-red-50 border border-red-300 rounded-lg animate-fadeIn">
-                        <p className="text-sm font-semibold text-red-700 mb-2">
-                          ✗ Error Response
-                        </p>
+                        <div className="flex items-center justify-between mb-2">
+                          <p className="text-sm font-semibold text-red-700">
+                            ✗ Error Response
+                          </p>
+                          {testResponse.statusCode && (
+                            <span className="px-3 py-1 bg-red-200 text-red-800 text-sm font-bold rounded">
+                              {testResponse.statusCode}
+                            </span>
+                          )}
+                        </div>
                         <p className="text-sm text-red-600 font-mono bg-white p-3 rounded border border-red-200">
                           {testResponse.error}
                         </p>
@@ -720,11 +783,16 @@ const Dashboard: FC = () => {
                         </p>
                         {rule.statusCodes && (
                           <div className="text-xs text-gray-600 mt-2 flex flex-wrap gap-1">
-                            {Object.entries(rule.statusCodes).map(([code, weight]) => (
-                              <span key={code} className="bg-gray-200 px-2 py-1 rounded font-mono">
-                                {code}: {weight}%
-                              </span>
-                            ))}
+                            {Object.entries(rule.statusCodes).map(
+                              ([code, weight]) => (
+                                <span
+                                  key={code}
+                                  className="bg-gray-200 px-2 py-1 rounded font-mono"
+                                >
+                                  {code}: {weight}%
+                                </span>
+                              ),
+                            )}
                           </div>
                         )}
                       </li>
@@ -744,9 +812,9 @@ const Dashboard: FC = () => {
                 </h3>
                 {urls.length > 0 ? (
                   <ul className="space-y-3 max-h-96 overflow-y-auto">
-                    {urls.map((url, index) => (
+                    {urls.map((url) => (
                       <li
-                        key={index}
+                        key={url.id}
                         className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border-l-4 border-green-500 hover:shadow-md transition group"
                       >
                         <p className="text-xs break-all font-mono text-gray-700 mb-2">

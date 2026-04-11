@@ -30,7 +30,7 @@ async function createRule(
   };
 
   const rule = await db.insert(rulesTable).values(values).returning();
-  return rule;
+  return rule[0];
 }
 
 async function bindUrlToRule(ruleId: number, urlId: number) {

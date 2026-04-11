@@ -6,7 +6,6 @@ async function createRuleService(userId: number, body: any) {
   const { endpoint, dataSchema, latency, errorRate, statusCodes } =
     validateCreateRule(body);
   const apiKey = await getUsersAPIKey(userId);
-  console.log(apiKey);
   const rule = await createRule(
     userId,
     endpoint,
