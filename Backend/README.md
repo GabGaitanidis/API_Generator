@@ -134,12 +134,6 @@ Mock APIs can simulate real-world delays by setting `latency` (in ms) when creat
 
 Example: `latency: 2000` adds a 2-second delay.
 
-## Error Injection
-
-For resilience testing, set `errorRate` (0-100%) when creating rules. The mock endpoint will randomly return a 500 error with that probability.
-
-Example: `errorRate: 30` means 30% chance of 500 error, 70% normal response.
-
 ## Common Errors
 
 - 401 unauthorized: missing or invalid JWT cookie or `Authorization: Bearer <token>`
