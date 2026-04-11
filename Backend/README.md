@@ -2,21 +2,6 @@
 
 Backend service for generating rule-based mock API data.
 
-## Table of Contents
-
-- [Prerequisites](#prerequisites)
-- [Run Local](#run-local)
-- [Routes](#routes)
-  - [Auth](#auth)
-  - [User](#user)
-  - [Rule](#rule)
-  - [Dynamic URL](#dynamic-url)
-  - [Mock API](#mock-api)
-- [Data Workflow](#data-workflow)
-- [Testing](#testing)
-- [Validation](#validation)
-- [Common Errors](#common-errors)
-
 ## Prerequisites
 
 - Node.js 18+ (preferred)
