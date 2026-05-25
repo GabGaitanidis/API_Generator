@@ -150,7 +150,7 @@ function infixToPostfix(expression: string): string {
   return result.join(" ");
 }
 
-function calculatePostFix(expression: string) {
+function calculatePostFix(expression: string): boolean {
   const operators = [
     "||",
     "&&",

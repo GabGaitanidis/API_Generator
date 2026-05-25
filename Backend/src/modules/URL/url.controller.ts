@@ -4,6 +4,7 @@ import getDynamicUrlService from "./getDynamicUrl.service";
 import updateDynamicUrlService from "./updateDynamicUrl.service";
 import deleteDynamicUrlService from "./deleteDynamicUrl.service";
 import { AppError } from "../../errors/AppError";
+import { getUrlQuerySchema } from "./url.validation";
 
 async function createUrlRoute(req: Request, res: Response) {
   const userId = Number(req.user?.id);
@@ -28,10 +29,17 @@ async function getUrlRoute(req: Request, res: Response) {
     throw new AppError("Invalid project id", 400);
   }
 
-  const urls = await getDynamicUrlService(userId, projectId);
+  const { page, limit } = getUrlQuerySchema.parse(req.query);
+  const result = await getDynamicUrlService(userId, projectId, page, limit);
+
   res.status(200).json({
     message: "Dynamic URLs fetched successfully",
-    urls,
+    urls: result.urls,
+    pagination: {
+      page: result.page,
+      limit: result.limit,
+      hasNext: result.hasNext,
+    },
   });
 }
 

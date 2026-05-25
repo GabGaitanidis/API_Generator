@@ -1,6 +1,19 @@
-# API Mock Data Backend
+# Backend
 
-Backend service for generating rule-based mock API data.
+Express + TypeScript API for the Api Mock Data project.
+
+## Current highlights
+
+- JWT auth with access and refresh cookies
+- Project, rule, condition set, and URL CRUD
+- Dynamic mock generation endpoint
+- Redis-backed caching for config lookups
+- Swagger/OpenAPI docs at `/docs`
+
+## API docs
+
+- Swagger UI: `http://localhost:5000/docs`
+- OpenAPI JSON: `http://localhost:5000/openapi.json`
 
 ## Prerequisites
 

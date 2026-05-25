@@ -1,13 +1,28 @@
 import { urlTable } from "../../db/schema";
 import { db } from "../../db";
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 
-async function getDynamicUrl(userId: number, projectId: number) {
-  const url = await db
+async function getDynamicUrl(
+  userId: number,
+  projectId: number,
+  page: number,
+  limit: number,
+) {
+  const offset = (page - 1) * limit;
+  const rows = await db
     .select()
     .from(urlTable)
-    .where(and(eq(urlTable.user_id, userId), eq(urlTable.project_id, projectId)));
-  return url;
+    .where(
+      and(eq(urlTable.user_id, userId), eq(urlTable.project_id, projectId)),
+    )
+    .orderBy(desc(urlTable.createdAt))
+    .limit(limit + 1)
+    .offset(offset);
+
+  const hasNext = rows.length > limit;
+  const urls = hasNext ? rows.slice(0, limit) : rows;
+
+  return { urls, page, limit, hasNext };
 }
 
 async function createDynamicUrl(
