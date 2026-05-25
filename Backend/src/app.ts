@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import swaggerUi from "swagger-ui-express";
 import urlRouter from "./modules/Rules/rules.route";
 import dynamicRouter from "./modules/URL/dynamic.route";
 import projectRouter from "./modules/Project/project.routes";
@@ -8,6 +9,7 @@ import conditionRouter from "./modules/ConditionSets/condition.routes";
 import { notFoundHandler, errorHandler } from "./middlewares/error.middleware";
 import authRouter from "./modules/Auth/auth.routes";
 import { globalLimiter, apiKeyLimiter, authLimiter } from "./utils/limiters";
+import openApiSpec from "./docs/openapi";
 
 const app = express();
 
@@ -58,6 +60,12 @@ app.use("/auth/login", authLimiter);
 app.use("/auth/register", authLimiter);
 app.use("/auth/refresh", authLimiter);
 app.use("/dynamics/api/mock", apiKeyLimiter);
+
+app.get("/openapi.json", (req, res) => {
+  res.json(openApiSpec);
+});
+
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(openApiSpec));
 
 app.use("/auth", authRouter);
 app.use("/projects", projectRouter);
