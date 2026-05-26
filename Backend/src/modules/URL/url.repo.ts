@@ -2,12 +2,21 @@ import { urlTable } from "../../db/schema";
 import { db } from "../../db";
 import { and, desc, eq } from "drizzle-orm";
 
+type UrlRow = typeof urlTable.$inferSelect;
+
+type PaginatedUrlsResult = {
+  urls: UrlRow[];
+  page: number;
+  limit: number;
+  hasNext: boolean;
+};
+
 async function getDynamicUrl(
   userId: number,
   projectId: number,
   page: number,
   limit: number,
-) {
+): Promise<PaginatedUrlsResult> {
   const offset = (page - 1) * limit;
   const rows = await db
     .select()

@@ -30,7 +30,12 @@ async function getUrlRoute(req: Request, res: Response) {
   }
 
   const { page, limit } = getUrlQuerySchema.parse(req.query);
-  const result = await getDynamicUrlService(userId, projectId, page, limit);
+  const result = await getDynamicUrlService({
+    userId,
+    projectId,
+    page,
+    limit,
+  });
 
   res.status(200).json({
     message: "Dynamic URLs fetched successfully",
